@@ -1,0 +1,27 @@
+{!REQUIRESCRIPT("/soap/ajax/30.0/connection.js")} 
+{!REQUIRESCRIPT("/soap/ajax/30.0/apex.js")} 
+
+if('{!Contact.Conga_Email__c}' == '1') 
+{ 
+a = '/apex/APXTConga4__Conga_Composer?SolMgr=1&serverUrl='; 
+b = '{!API.Partner_Server_URL_370}'; 
+c = '&Id='; 
+d = '{!Contact.Id}'; 
+e = '&CongaEmailTemplateId=a2WM00000011fEP&EmailToId='; 
+f = '{!Contact.Id}'; 
+g = '&DS7=12&Qmode=Attachments&QMode=SendEmail'; 
+url = a + b + c + d + e + f + g; 
+
+var query = "select Id,Division__c from Contact where Id = '{!Contact.Id}' limit 1"; 
+var result = sforce.connection.query(query); 
+var records = result.getArray("records"); 
+var myObj = records[0]; 
+
+myObj.Division__c = 'Lead'; 
+
+var results = sforce.connection.update([myObj]); 
+window.location.href = url; 
+} 
+else{ 
+alert('Email marked as'+'{!API.Partner_Server_URL_370}'); 
+}
